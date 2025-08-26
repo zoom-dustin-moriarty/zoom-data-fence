@@ -22,6 +22,22 @@ on:
       - 'pom.xml'
 
 jobs:
+  spotless:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: spotless-${{ github.ref }}
+      cancel-in-progress: true
+    steps:
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      - name: Set up JDK
+        uses: actions/setup-java@c5195efecf7bdfc987ee8bae7a71cb8b11521c00 # v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+      - name: Check code formatting with Spotless
+        run: mvn -B spotless:check --file pom.xml
+
   test:
     runs-on: ubuntu-latest
     steps:
