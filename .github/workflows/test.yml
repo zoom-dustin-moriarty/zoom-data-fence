@@ -32,8 +32,10 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
           cache: maven
-      - name: Build with Maven and check formatting
+      - name: Check code formatting with Spotless
         run: mvn -B verify -DskipTests --file pom.xml
+      - name: Build with Maven and run tests
+        run: mvn -B package --file pom.xml
 
   docker-test:
     needs: test
